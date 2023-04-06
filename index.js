@@ -3,6 +3,7 @@ const fs = require("fs");
 const generateMarkdown = require("./generateMarkdown");
 const path = require("path");
 
+
 const questions =( [
     {
     type: "input",
@@ -18,6 +19,7 @@ const questions =( [
     type: "checkbox",
     message: "Do you want a Table of Contents?",
     name: "Table of Contents",
+    Choices: ["yes", "no"]
 },
 {
     type: "input",
@@ -28,10 +30,11 @@ const questions =( [
     tpye: "checkbox",
     message: "Please select the license.",
     name: "License",
+    choices: ["MIT", "Mozilla Public License 2.0", "ISC", "Academic Free License v3.0", "none"],
 },
 {
     tpye: "input",
-    message: "Please state how this project will be used.",
+    message: "What languages or technologies are used in this project?",
     name: "Usage",
 },
 {
@@ -51,3 +54,13 @@ const questions =( [
 },
 ]
 )
+
+function writeToFile(fileName, data){
+    return fs.writeFileSync(path.join(process.cwd(), fileName, data));
+}
+function init() {
+    inquirer.prompt(questions).then((responces) => {
+        console.log("creatingReadME.md file...");
+        writeToFile("./endProduct/ReadME.md", generateMarkdown({ ...responces }));
+    })
+}
